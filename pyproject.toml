@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my_app"
+version = "0.1.0"
+authors = [
+    {name = "Ageev Maxim", email = "maksim170901@gmail.com"},
+]
+description = "Simulation World"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT License"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+  "flask==3.1.0",
+  "celery[redis]==5.4.0",
+  "dishka @ https://github.com/ApostolFet/dishka/archive/celery_integration.zip"
+]
+

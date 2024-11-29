@@ -1,0 +1,43 @@
+services:
+  worker:
+    build: .
+    command: ["celery", "-A", "my_app.app:celery_app", "worker", "-l", "info"]
+    depends_on:
+      - rabbit
+      - redis
+
+  sheduler:
+    build: .
+    command: ["celery", "-A", "my_app.app:celery_app", "beat", "-l", "info"]
+    depends_on:
+      - rabbit
+      - redis
+
+  web:
+    build: .
+    command:
+      [
+        "flask",
+        "--app",
+        "my_app.app:flask_app",
+        "run",
+        "--host",
+        "0.0.0.0",
+        "--debug",
+      ]
+    ports:
+      - "5000:5000"
+    depends_on:
+      - worker
+
+  rabbit:
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+
+  redis:
+    image: redis:7.4-bookworm
